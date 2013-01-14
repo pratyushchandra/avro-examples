@@ -40,8 +40,37 @@ public class TestGeneratedCode {
 		inputData.add(user1);
 		inputData.add(user2);
 		inputData.add(user3);
-		GeneratedCode.serialize(inputData, schemaFile, outputFile);
-		List<User> outputData = GeneratedCode.deserialize(outputFile);
+		GeneratedCode.binarySerializeWithSchema(inputData, schemaFile,
+				outputFile);
+		List<User> outputData = GeneratedCode
+				.deserializeWithoutSchema(outputFile);
+		for (int i = 0; i < inputData.size(); i++) {
+			assertSame(inputData.get(i), outputData.get(i));
+		}
+	}
+
+	@Test
+	public void test2() throws IOException {
+		File outputFile = Misc.getNonExistingTemporaryDirectoryName();
+		List<User> inputData = new ArrayList<User>();
+		User user1 = new User();
+		user1.setName("Alyssa");
+		user1.setFavoriteNumber(256);
+		user1.setFavoriteColor("yellow");
+
+		// Alternate constructor
+		User user2 = new User("Ben", 7, "red");
+
+		// Construct via builder
+		User user3 = User.newBuilder().setName("Charlie")
+				.setFavoriteColor("blue").setFavoriteNumber(33).build();
+
+		inputData.add(user1);
+		inputData.add(user2);
+		inputData.add(user3);
+		GeneratedCode.binarySerializeWithoutSchema(inputData, outputFile);
+		List<User> outputData = GeneratedCode.deserializeWithSchema(outputFile);
+
 		for (int i = 0; i < inputData.size(); i++) {
 			assertSame(inputData.get(i), outputData.get(i));
 		}

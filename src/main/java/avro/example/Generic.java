@@ -14,6 +14,11 @@ import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.io.DatumReader;
 import org.apache.avro.io.DatumWriter;
 
+/**
+ * Using GenericRecord API
+ * @author pratyush
+ *
+ */
 public class Generic {
 
 	/*
